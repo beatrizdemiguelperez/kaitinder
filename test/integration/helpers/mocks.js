@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
-const Candidate = require('../../../app/routes')._CandidateModel;
+const Candidate = require('../../../app/repository/mongo/models/candidate');
 
 const mocks = [
   {
