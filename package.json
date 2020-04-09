@@ -1,0 +1,87 @@
+{
+  "name": "kaitinder-ms",
+  "version": "1.0.0",
+  "description": "KaiTinder from Kairos DS",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "export $(cat .env.dev | xargs) && node app/index.js",
+    "start:dev": "export $(cat .env.dev | xargs) && nodemon app/index.js",
+    "test": "export $(cat .env.test | xargs) && jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint .",
+    "initdb": "export $(cat .env | xargs) && node scripts/run.js"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier-eslint --write",
+      "eslint",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "printWidth": 120,
+    "semi": true,
+    "useTabs": false
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
+  "author": "Kairos",
+  "license": "ISC",
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./test/setup.js"
+    ],
+    "testEnvironment": "node",
+    "coverageDirectory": "./coverage",
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "cobertura",
+      "text"
+    ]
+  },
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "bunyan": "^1.8.12",
+    "bunyan-format": "^0.2.1",
+    "express": "^4.17.1",
+    "glob": "^7.1.6",
+    "http-status": "^1.3.2",
+    "js-yaml": "^3.13.1",
+    "mongoose": "^5.9.7",
+    "nock": "^11.7.0",
+    "nodemon": "^2.0.2",
+    "swagger-ui-express": "^4.1.2",
+    "mongodb-memory-server": "^6.2.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.2.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-standard": "^4.0.0",
+    "jest": "^25.1.0",
+    "husky": "^3.0.5",
+    "lint-staged": "^9.2.5",
+    "prettier-eslint-cli": "^5.0.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "supertest": "^3.4.2",
+    "uuid": "^3.4.0"
+  }
+}

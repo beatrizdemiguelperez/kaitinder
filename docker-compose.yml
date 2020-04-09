@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  mongo:
+    image: "mongo:4.2-bionic"
+    container_name: mongo
+    environment:
+      MONGO_INITDB_DATABASE: kaitinder
+    volumes:
+      - ./persistence/mongo/data/db:/data/db
+      - ./persistence/mongo/data/backup:/data/backup
+      - ./persistence/mongo/data/log/:/var/log/mongodb/
+    ports:
+      - "27017:27017"
+

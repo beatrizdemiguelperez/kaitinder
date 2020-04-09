@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "jest": true
+  },
+  "plugins": ["import"],
+  "rules": {
+    "max-len": "off",
+    "no-underscore-dangle": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": ["**/*.spec.js"]
+      }
+    ]
+  }
+}
