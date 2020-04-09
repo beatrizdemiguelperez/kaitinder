@@ -18,11 +18,44 @@ const mongoConfig = {
   useUnifiedTopology: true,
 };
 
+const schema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    photo: { type: String, required: false },
+    gender: { type: String, required: true },
+    birthDate: { type: Date, required: true },
+    city: { type: String, required: true },
+    coordinates: {
+      lat: { type: Number, required: false },
+      long: { type: Number, required: false },
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  },
+);
+
+const defaultProjection = {
+  name: 1,
+  photo: 1,
+  gender: 1,
+  city: 1,
+  coordinates: 1,
+  birthDate: { $dateToString: { format: '%Y-%m-%d', date: '$birthDate' } },
+};
+
+const Candidate = mongoose.model('Candidate', schema);
+
 const initServer = () => {
   const app = express();
 
-  app.get('/candidates', (req, res) => {
-    // @TODO: challenge-1 implementa la logica del endpoint
+  app.get('/candidates', async (req, res, next) => {
+    // @TODO: challenge-2
+    const aggregation = [{ $project: defaultProjection }];
+    const data = await Candidate.aggregate(aggregation).exec();
+    res.send({ data });
+    next();
   });
 
   if (process.env.NODE_ENV === 'development') {
@@ -38,7 +71,7 @@ const mongoUri = `${MONGO_HOST}/${MONGO_DB_NAME}`;
 const mongoConnect = async () => {
   try {
     log.info(`Connecting to ${mongoUri}`);
-    // @TODO: challenge-1 implementa la conexión con mongo
+    await mongoose.connect(mongoUri, mongoConfig);
   } catch (e) {
     log.error(`Error trying to connect Mongo database [${mongoUri}]: ${e}`, 'error');
     throw e;
