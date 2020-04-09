@@ -27,10 +27,7 @@ También puedes arrancar tu servidor en tu editor Visual Studio Code
 
 *Bonus points:*
 
-Monta tu base de datos local ejecutando:
+Monta tu base de datos local, Inicializa ejecutando el script:
 
+> $ ./scripts/init_db.sh
 > $ docker-compose up
-
-Inicializa tu base de datos local ejecutando el script:
-
-> $ npm run initdb
