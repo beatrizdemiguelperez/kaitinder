@@ -64,3 +64,4 @@ router.get(
 );
 
 module.exports = router;
+module.exports._CandidateModel = Candidate;

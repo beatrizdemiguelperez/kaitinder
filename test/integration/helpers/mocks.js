@@ -1,8 +1,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
-const mongoose = require('mongoose');
-
-const Candidate = mongoose.model('Candidate', new mongoose.Schema({ }, { strict: false }));
+const Candidate = require('../../../app/routes')._CandidateModel;
 
 const mocks = [
   {
