@@ -4,6 +4,8 @@ const getCandidatesValidator = require('./validators/get-candidates.params');
 const validator = require('./libs/validator');
 const { AppError, HttpErrorBuilder } = require('./errors');
 
+// @TODO: refactorizar en routes -> controllers -> domain
+
 const schema = new mongoose.Schema(
   {
     name: { type: String, required: true },
