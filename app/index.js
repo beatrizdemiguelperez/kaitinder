@@ -1,5 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const getCandidatesValidator = require('./validators/get-candidates.params');
+const validator = require('./libs/validator');
+const { AppError, HttpErrorBuilder } = require('./errors');
 
 const swagger = require('./libs/swagger');
 const log = require('./libs/log');
@@ -50,13 +53,47 @@ const Candidate = mongoose.model('Candidate', schema);
 const initServer = () => {
   const app = express();
 
-  app.get('/candidates', async (req, res, next) => {
-    // @TODO: challenge-2
-    const aggregation = [{ $project: defaultProjection }];
+  const validationMiddleware = async (req, res, next) => {
+    const errors = await validator(getCandidatesValidator, req.query);
+    if (errors) {
+      next(new AppError(HttpErrorBuilder.BAD_REQUEST(1), { errors }));
+    }
+    next();
+  };
+
+  const errorHandler = (err, req, res, next) => {
+    const error = err instanceof AppError ? err : new AppError(HttpErrorBuilder.SERVICE_UNAVAILABLE());
+
+    log.error(err.stack);
+
+    res.status(error.status).send({
+      status: error.status,
+      message: error.message,
+      code: error.code,
+      data: error.data,
+    });
+
+    next();
+  };
+
+  app.get('/candidates', validationMiddleware, async (req, res, next) => {
+    const { offset = 0, limit = 0 } = req.query;
+    const aggregation = [{ $sort: { createdAt: 1 } }, { $skip: parseInt(offset) }];
+    const $limit = parseInt(limit);
+
+    if ($limit !== 0) {
+      aggregation.push({ $limit });
+    }
+
+    aggregation.push({
+      $project: defaultProjection,
+    });
     const data = await Candidate.aggregate(aggregation).exec();
     res.send({ data });
     next();
   });
+
+  app.use(errorHandler);
 
   if (process.env.NODE_ENV === 'development') {
     swagger.addSwaggerRoute(app, '/api-docs');
