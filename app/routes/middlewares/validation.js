@@ -1,9 +1,8 @@
 const validator = require('../../libs/validator');
 const { AppError, HttpErrorBuilder } = require('../../errors');
-const getCandidatesValidator = require('../../validators/get-candidates.params');
 
-const validationMiddleware = async (req, res, next) => {
-  const errors = await validator(getCandidatesValidator, req.query);
+const validationMiddleware = (validationSchema, path) => async (req, res, next) => {
+  const errors = await validator(validationSchema, req[path]);
   if (errors) {
     next(new AppError(HttpErrorBuilder.BAD_REQUEST(1), { errors }));
   }

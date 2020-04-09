@@ -9,6 +9,17 @@ const getCandidates = (getCandidatesDomain) => async (req, res, next) => {
   }
 };
 
+const create = (createDomain) => async (req, res, next) => {
+  try {
+    const data = await createDomain(req.body);
+    res.send({ data });
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   getCandidates,
+  create,
 };

@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyparser = require('body-parser');
 
 const router = require('./routes');
 const swagger = require('./libs/swagger');
@@ -11,6 +12,8 @@ let app;
 
 const init = () => {
   app = express();
+
+  app.use(bodyparser.json());
 
   app.use('/', router);
 

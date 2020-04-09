@@ -24,6 +24,9 @@ const get = async ({ offset, limit }) => {
   return data;
 };
 
+const insert = (candidate) => Candidate.create(candidate);
+
 module.exports = {
   get,
+  insert,
 };
