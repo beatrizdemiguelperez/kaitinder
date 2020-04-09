@@ -4,9 +4,6 @@
 coverage/*
 data/db
 
-# Visual Studio Code
-.vscode/*
-
 ### Node ###
 # Logs
 logs
