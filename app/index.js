@@ -1,12 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
 
 const swagger = require('./libs/swagger');
 const log = require('./libs/log');
 
 const port = process.env.PORT;
-const user = process.env.MONGO_USER;
-const pass = process.env.MONGO_PASS;
 
 const mongoConfig = {
   user,
@@ -32,12 +29,10 @@ const initServer = () => {
   app.listen(port, (error) => (error ? log.error(error) : log.info(`Server listening at port: ${port}`)));
 };
 
-const { MONGO_HOST, MONGO_DB_NAME } = process.env;
-const mongoUri = `${MONGO_HOST}/${MONGO_DB_NAME}`;
-
 const mongoConnect = async () => {
   try {
     log.info(`Connecting to ${mongoUri}`);
+
     // @TODO: challenge-1 implementa la conexión con mongo
   } catch (e) {
     log.error(`Error trying to connect Mongo database [${mongoUri}]: ${e}`, 'error');
